@@ -58,7 +58,7 @@ public class Astar {
                         Collections.sort(nodosPorEvaluar); //equivale a cambiar la prioridad a una cola
                         nodosPorEvaluar.add(adyacente);
                         adyacente.setRaiz(actual); //añadir el camino
-                        System.out.println("n: " + nuevoCosto);
+                        //System.out.println("n: " + nuevoCosto);
                         adyacente.setFuncionG(nuevoCosto);
                         adyacente.setFuncionHeursitica(calcularHeuristica(adyacente, destino,diagonales));
 
@@ -74,6 +74,8 @@ public class Astar {
 
     public void reconstruirCamino(Nodo nodo)
     {
+        grafo.getGrafoGrafico();
+        
         List<String> path = new ArrayList<>();
         double costo=0;
         int cont =1;

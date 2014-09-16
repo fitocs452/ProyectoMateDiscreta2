@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Grafo {
     private int ancho;
     private int alto;
-    private ArrayList<ArrayList<Nodo>> grafo;
+    private ArrayList<ArrayList<Nodo>> grafo; 
 
     public Grafo(int w, int h) {
         this.ancho = w;
@@ -31,8 +31,24 @@ public class Grafo {
                 grafo.get(y).add(nodo);
             }
         }
+        
     }
 
+    public void getGrafoGrafico(){
+       
+        for (int y = 0; y < alto; y++) 
+        {
+            for (int x = 0; x < ancho; x++)
+            {
+                System.out.print(grafo.get(y).get(x));
+                if (x==ancho-1){
+                    System.out.println("");
+                }
+                
+            }
+        }
+        
+    }
     public int getAncho() {
         return ancho;
     }
