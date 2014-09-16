@@ -28,13 +28,14 @@ public class Astar {
 
         nodosPorEvaluar.add(inicio);
 
-
+        int contadorIteraciones=0;
         while (!nodosPorEvaluar.isEmpty()) {
 
             Nodo actual = nodosPorEvaluar.get(0);//obtener el nodo con menor funcion f
 
             if (actual.equals(destino)) 
             {  
+                System.out.println("Iteraciones totales-> " + contadorIteraciones);
                 System.out.println("Costo Total-> " + actual.getFuncionG()+actual.getFuncionHeursitica());
                 reconstruirCamino(actual);
                 break;
@@ -65,6 +66,7 @@ public class Astar {
                     }//cierra true adyacente mejor
 
                 }//cierra if obstaculo 
+                contadorIteraciones++;
             }//cierra for adyacente
         }//cierra while
 
