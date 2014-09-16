@@ -45,16 +45,15 @@ public class Astar {
             nodosEvaluados.add(actual);
 
             for (Nodo adyacente : actual.getNodosAdyacente(diagonales)) {
-                boolean adyacenteIsMejor;
                 if (nodosEvaluados.contains(adyacente))
                     continue; //se salta una iteracion
 
                 if (!adyacente.isIsObstaculo()) {
-                    double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
+                    double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);//g actual mas costo de la arista
                     
-                    
-
                     if (!nodosPorEvaluar.contains(adyacente) ||nuevoCosto < adyacente.getFuncionG()) {
+                        //implementacion de comparable para tener el nodo con menor funcionF 
+                        //al principio de la cola
                         Collections.sort(nodosPorEvaluar); //equivale a cambiar la prioridad a una cola
                         nodosPorEvaluar.add(adyacente);
                         adyacente.setRaiz(actual); //añadir el camino
@@ -72,36 +71,33 @@ public class Astar {
 
     }//cierra calcular
 
+    //método para mostrar el camino más corto encontrado
     public void reconstruirCamino(Nodo nodo)
     {
         grafo.getGrafoGrafico();
         
         List<String> path = new ArrayList<>();
-        double costo=0;
-        int cont =1;
+
         while (!(nodo.getRaiz() == null)) {
             path.add("("+nodo.getX() +"," + nodo.getY()+")");
-            costo+= nodo.getFuncionG()+nodo.getFuncionHeursitica();
-           
+            
             nodo = nodo.getRaiz();
         }
-      
         path.add("("+nodo.getX() +"," + nodo.getY()+")");
         Collections.reverse(path);
         System.out.println("");
         System.out.println(path.toString() + " ->Camino más corto");
         
-
-
     }
-
+    //distancia entre nodos
     public double getDistanciaEntre(Nodo n1, Nodo n2) {
-            if ((n1.getX() == n2.getX() ) || (n1.getY() == n2.getY()))
-                    return 1; //si estan a a la par el costo es constante
-            else
-                    return Math.sqrt(2); //en otro caso estan en diagonal, costo = raiz de 2
+        if ((n1.getX() == n2.getX() ) || (n1.getY() == n2.getY()))
+            return 1; //si estan a a la par el costo es constante
+        else
+            return Math.sqrt(2); //en otro caso estan en diagonal, costo = raiz de 2
     }
-
+    
+    //referencia: http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html#diagonal-distance
     public double calcularHeuristica(Nodo current, Nodo goal, boolean diagonales) {
         
         double D = 1.0; //peso de aristas adyacentes
