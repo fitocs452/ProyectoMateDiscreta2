@@ -6,108 +6,109 @@ import java.util.List;
 
 
 public class Astar {
-	 
-	private Grafo grafo;
-	
-	private Nodo start;
-	private Nodo finish;
-	
-	public Astar() {
-            this.grafo = new Grafo(4, 4);
-            this.start = new Nodo(0, 0, grafo);
-            this.finish = new Nodo(3, 3, grafo);
-		
-		
-	}
-	
-	public void calcular() {
-            ArrayList<Nodo> nodosPorEvaluar = new ArrayList<>();
-            ArrayList<Nodo> nodosEvaluados =new ArrayList<>();
 
-            start.setFuncionG(0);
-            nodosPorEvaluar.add(start);
+    private final Grafo grafo;
+    private final Nodo inicio;
+    private final Nodo destino;
 
-            Nodo actual = null;
-		
-            while (!nodosPorEvaluar.isEmpty()) {
-                
-                actual = nodosPorEvaluar.get(0);
-                
-                if (actual.equals(finish)) 
-                {
-                    reconstruirCamino(actual);
-                    break;
-                }
-                
-                nodosPorEvaluar.remove(actual);
-                nodosEvaluados.add(actual);
-                
-                for (Nodo adyacente : actual.getNodosAdyacente()) {
-                    boolean adyacenteIsMejor;
-                    if (nodosEvaluados.contains(adyacente))
-                        continue; //se salta una iteracion
-                    if (!adyacente.isIsObstaculo()) {
-                        double distanciaInicio = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
-                        if (!nodosPorEvaluar.contains(adyacente)) {
-                            nodosPorEvaluar.add(adyacente);
-                            Collections.sort(nodosPorEvaluar);
-                            adyacenteIsMejor = true;
-                        }
-                        else if (!nodosPorEvaluar.contains(adyacente)||distanciaInicio < adyacente.getFuncionG())
-                            adyacenteIsMejor = true;
-                        else
-                            adyacenteIsMejor = false;
-                        if (adyacenteIsMejor) {
-                            adyacente.setRaiz(actual);
-                            adyacente.setFuncionG(distanciaInicio);
-                            adyacente.setFuncionHeursitica(getDistanciaDestino(adyacente, finish));
+    public Astar(int ancho, int alto) 
+    {
+        this.grafo = new Grafo(ancho, alto);
+        this.inicio = new Nodo(0, 0, grafo);
+        this.destino = new Nodo(ancho-1, alto-1, grafo);
 
-                        }
-                    } 
+    }
 
-                }
+    public void calcular(boolean diagonales) 
+    {
+        ArrayList<Nodo> nodosEvaluados= new ArrayList<>(); //set de nodos evaluados
+        ArrayList<Nodo> nodosPorEvaluar = new ArrayList<>();//set de nodos por evaluar, contiene inicialmente al nodo inicial
+
+        inicio.setFuncionG(0); //costo desde el inicio hasta el mejor camino conocido
+
+        nodosPorEvaluar.add(inicio);
+
+
+        while (!nodosPorEvaluar.isEmpty()) {
+
+            Nodo actual = nodosPorEvaluar.get(0);//obtener el nodo con menor funcion f
+
+            if (actual.equals(destino)) 
+            {  
+                System.out.println("Costo Total-> " + actual.getFuncionG()+actual.getFuncionHeursitica());
+                reconstruirCamino(actual);
+                break;
             }
-		
-			
-	}
-	
-	public void reconstruirCamino(Nodo node) {
-          
-           List<String> path = new ArrayList<>();
-        
-		while (!(node.getRaiz() == null)) {
-            path.add("("+node.getX() +"," + node.getY()+")");
-			node = node.getRaiz();
-		}
-        path.add("("+node.getX() +"," + node.getY()+")");
+             
+            nodosPorEvaluar.remove(actual);
+            nodosEvaluados.add(actual);
+
+            for (Nodo adyacente : actual.getNodosAdyacente(diagonales)) {
+                boolean adyacenteIsMejor;
+                if (nodosEvaluados.contains(adyacente))
+                    continue; //se salta una iteracion
+
+                if (!adyacente.isIsObstaculo()) {
+                    double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
+                    
+                    
+
+                    if (!nodosPorEvaluar.contains(adyacente) ||nuevoCosto < adyacente.getFuncionG()) {
+                        Collections.sort(nodosPorEvaluar); //equivale a cambiar la prioridad a una cola
+                        nodosPorEvaluar.add(adyacente);
+                        adyacente.setRaiz(actual); //añadir el camino
+                        System.out.println("n: " + nuevoCosto);
+                        adyacente.setFuncionG(nuevoCosto);
+                        adyacente.setFuncionHeursitica(calcularHeuristica(adyacente, destino,diagonales));
+
+
+                    }//cierra true adyacente mejor
+
+                }//cierra if obstaculo 
+            }//cierra for adyacente
+        }//cierra while
+
+    }//cierra calcular
+
+    public void reconstruirCamino(Nodo nodo)
+    {
+        List<String> path = new ArrayList<>();
+        double costo=0;
+        int cont =1;
+        while (!(nodo.getRaiz() == null)) {
+            path.add("("+nodo.getX() +"," + nodo.getY()+")");
+            costo+= nodo.getFuncionG()+nodo.getFuncionHeursitica();
+           
+            nodo = nodo.getRaiz();
+        }
+      
+        path.add("("+nodo.getX() +"," + nodo.getY()+")");
         Collections.reverse(path);
         System.out.println("");
         System.out.println(path.toString() + " ->Camino más corto");
         
 
-	}
-	
-	private double getDistanciaEntre(Nodo n1, Nodo n2) {
-		if ((n1.getX() == n2.getX() ) || (n1.getY() == n2.getY()))
-			return 1;
-		else
-			return 1.9;
-	}
-	
-	private double getDistanciaDestino(Nodo start, Nodo finish) {
-		
-		//Closest heuristic
-		//		double dx = finish.x - start.x;
-		//		double dy = finish.y - start.y;
-		//		return (dx + dx) * (dy + dy);
-		
-		//Diagonal heuristic
-		double h_diagonal = Math.min(Math.abs(start.getX()- finish.getX()), Math.abs(start.getY() - finish.getY()));
-		double h_straight = Math.abs(start.getX() - finish.getX()) + Math.abs(start.getY() - finish.getY());
-		double h_result = Math.sqrt(2) * h_diagonal + (h_straight - 2 * h_diagonal);
-		
-		
-		return h_result;
-	}
-	
+
+    }
+
+    public double getDistanciaEntre(Nodo n1, Nodo n2) {
+            if ((n1.getX() == n2.getX() ) || (n1.getY() == n2.getY()))
+                    return 1; //si estan a a la par el costo es constante
+            else
+                    return Math.sqrt(2); //en otro caso estan en diagonal, costo = raiz de 2
+    }
+
+    public double calcularHeuristica(Nodo current, Nodo goal, boolean diagonales) {
+        
+        double D = 1.0; //peso de aristas adyacentes
+        double D2 = Math.sqrt(2); //peso de arista diagonales
+        double dx = Math.abs(current.getX()-goal.getX());
+        double dy= Math.abs(current.getY()-goal.getY());
+        double p = 1/1000;//minimum cost of taking one step/expected maximum path length
+        return (D*(dx+dy)+(D2-2*D)*Math.min(dx,dy))*(1.0 + p);
+
+    }
+
+
 }
+
