@@ -61,14 +61,11 @@ public class Astar {
                         adyacente.setFuncionG(nuevoCosto);
                         adyacente.setFuncionHeursitica(calcularHeuristica(adyacente, destino,diagonales));
 
-
                     }//cierra true adyacente mejor
-
                 }//cierra if obstaculo 
                 contadorIteraciones++;
             }//cierra for adyacente
         }//cierra while
-
     }//cierra calcular
 
     //método para mostrar el camino más corto encontrado

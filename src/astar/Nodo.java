@@ -25,28 +25,31 @@ public class Nodo implements Comparable<Nodo> {
     }
 
     public boolean equals(Nodo nodo) {
-            return (this.x == nodo.x) && (this.y == nodo.y);
+        return (this.x == nodo.x) && (this.y == nodo.y);
     }
-	
-	
-    public ArrayList<Nodo> getNodosAdyacente(boolean diagonales) {
-    Random aleatorio = new Random();
-    int distribuicion =0;
-    if (diagonales)
-        distribuicion= aleatorio.nextInt(2)+1;
+    //método para calcular los nodos adyacentes de un nodo
+    public ArrayList<Nodo> getNodosAdyacente(boolean diagonales) 
+    {
+    //si es con diagonales se crea un número aleatorio con probabilidad 1/2
         
+        Random aleatorio = new Random();
+        int distribuicion =0;
+        if (diagonales)
+            distribuicion= aleatorio.nextInt(2)+1;
         
-        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>();
+        ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
+        //verificar los nodos con x constantes y y hacia abajo
         if ((y != 0)) 
         {
                 nodosAdyacentes.add(grafo.getNodo(x, (y - 1)));
         }
         
-       
+       //verificar los nodos con x hacia la derecha y y constante
         if ((x != (grafo.getAncho() - 1))) {
                 nodosAdyacentes.add(grafo.getNodo(x + 1, y));
 
         }
+        //verificar los nodos en diagonal
         if (diagonales)
         {
             if (distribuicion ==1)
@@ -79,20 +82,19 @@ public class Nodo implements Comparable<Nodo> {
                 }
             }
         }
-        
+        //verificar los nodos con x constante y y hacia arriba
         if ((y != (grafo.getAlto() - 1)))
         {
                 nodosAdyacentes.add(grafo.getNodo(x, y + 1));
 
         }
         
-      
+       //verificar los nodos x hacia abajo y y constante
         if ((x != 0)) 
         {
             nodosAdyacentes.add(grafo.getNodo(x - 1, y));
 
         }
-        
         
         return nodosAdyacentes;
     }
