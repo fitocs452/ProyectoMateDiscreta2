@@ -6,6 +6,7 @@
 
 package astar;
 
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
@@ -51,7 +52,15 @@ public class starM {
         
         Astar astar = new Astar(tamanio,tamanio);
         astar.calcular(diagonales);
-
+        
+        
+         JFrame window = new JFrame();
+          
+          window.setSize(450, 450);
+          window.setLocationRelativeTo(null);
+          window.setVisible(true);
+          window.add(new GrafoGrafico(astar.getGrafo(),tamanio,tamanio,astar.getPath()));
+          window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
 }

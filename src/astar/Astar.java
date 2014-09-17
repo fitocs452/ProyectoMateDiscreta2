@@ -11,12 +11,13 @@ public class Astar {
     private final Grafo grafo;
     private final Nodo inicio;
     private final Nodo destino;
-
+    private List<Nodo> path = new ArrayList<>();
+    
     public Astar(int ancho, int alto) 
     {
         this.grafo = new Grafo(ancho, alto);
-        this.inicio = new Nodo(0, 0, grafo);
-        this.destino = new Nodo(ancho-1, alto-1, grafo);
+        this.inicio = new Nodo(0, alto-1, grafo);
+        this.destino = new Nodo(ancho-1, 0, grafo);
 
     }
 
@@ -85,13 +86,13 @@ public class Astar {
     {
         grafo.getGrafoGrafico();
         
-        List<String> path = new ArrayList<>();
+        
 
         while (!(nodo.getRaiz() == null)) {
-            path.add(nodo.toString());
+            path.add(nodo);
             nodo = nodo.getRaiz();
         }
-        path.add(nodo.toString());
+        path.add(nodo);
         Collections.reverse(path); //cambiar el orden
         System.out.println("");
         System.out.println(path.toString() + " ->Camino más corto");
@@ -113,9 +114,21 @@ public class Astar {
         double dx = Math.abs(current.getX()-goal.getX());
         double dy= Math.abs(current.getY()-goal.getY());
         double p = 1/16;//minimum cost of taking one step/expected maximum path length
+        //se realiza un promedio de distancia manhattan de 8 movimientos y 4 movimientos
         double promedio = ((D*(dx+dy)+(D2-2*D)*Math.min(dx,dy))+(D*(dx+dy)))/2;
         return promedio*(1.0 + p);
        
     }
+
+    public Grafo getGrafo() {
+        return grafo;
+    }
+
+    public List<Nodo> getPath() {
+        return path;
+    }
+    
+    
+    
 }
 

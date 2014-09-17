@@ -29,6 +29,8 @@ public class Grafo {
             {
                 nodo = new Nodo(x, y, this);
                 grafo.get(y).add(nodo);
+                if (x==3&&y==2||(x==2&&y==2)||(x==1&&y==2)||x==0&&y==3)
+                    nodo.setIsObstaculo(true);
             }
         }
         
