@@ -12,8 +12,7 @@ public class Nodo implements Comparable<Nodo> {
     private int y;
     private double funcionHeursitica;//costo del camino nodo actual al final -> Greedy
     private double distanciaDesdeInicio; //funcion G:costo del mejor camino encontrado->Dijsktra
-    private double funcionF; //f = g+h
-
+ 
     public Nodo(int x, int y, Grafo grafo) {
         this.x = x;
         this.y = y;
@@ -21,7 +20,7 @@ public class Nodo implements Comparable<Nodo> {
         this.distanciaDesdeInicio=Integer.MAX_VALUE; //al principio los nodos tienen costo infinito
         this.grafo = grafo;
     }
-
+    //método para comparar igualdad entre nodos
     public boolean equals(Nodo nodo) {
         return (this.x == nodo.x) && (this.y == nodo.y);
     }
@@ -33,18 +32,18 @@ public class Nodo implements Comparable<Nodo> {
         Random aleatorio = new Random();
         int distribuicion =0;
         if (diagonales)
-            distribuicion= aleatorio.nextInt(2)+1;
+            distribuicion= aleatorio.nextInt(2)+1;//aleatorio 1 o 2
         
         ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
         //verificar los nodos con x constantes y y hacia abajo
         if ((y != 0)) 
         {
-                nodosAdyacentes.add(grafo.getNodo(x, (y - 1)));
+            nodosAdyacentes.add(grafo.getNodo(x, (y - 1)));
         }
         
        //verificar los nodos con x hacia la derecha y y constante
         if ((x != (grafo.getAncho() - 1))) {
-                nodosAdyacentes.add(grafo.getNodo(x + 1, y));
+            nodosAdyacentes.add(grafo.getNodo(x + 1, y));
 
         }
         //verificar los nodos en diagonal
@@ -55,7 +54,7 @@ public class Nodo implements Comparable<Nodo> {
                 //diagonales hacia derecha y arriba
                  if ((y != 0) && !(x == (grafo.getAncho() - 1))) 
                 {
-                        nodosAdyacentes.add(grafo.getNodo(x + 1, y - 1));
+                    nodosAdyacentes.add(grafo.getNodo(x + 1, y - 1));
 
                 }
                 //diagonales hacia  izquierda y abajo
@@ -70,7 +69,7 @@ public class Nodo implements Comparable<Nodo> {
                 //diagonales hacia abajo y derecha
                 if ((x != (grafo.getAncho()- 1)) && !(y == (grafo.getAlto() - 1))) 
                 {
-                        nodosAdyacentes.add(grafo.getNodo(x + 1, y + 1));
+                    nodosAdyacentes.add(grafo.getNodo(x + 1, y + 1));
                 }
                 //diagonales hacia izquierda y arriba
                 if ((x != 0) && (y != 0)) 
@@ -83,7 +82,7 @@ public class Nodo implements Comparable<Nodo> {
         //verificar los nodos con x constante y y hacia arriba
         if ((y != (grafo.getAlto() - 1)))
         {
-                nodosAdyacentes.add(grafo.getNodo(x, y + 1));
+            nodosAdyacentes.add(grafo.getNodo(x, y + 1));
 
         }
         
@@ -96,16 +95,6 @@ public class Nodo implements Comparable<Nodo> {
         
         return nodosAdyacentes;
     }
-
-    public double getFuncionF() {
-        return funcionF;
-    }
-
-    public void setFuncionF(double funcionF) {
-        this.funcionF = funcionF;
-    }
-
-    
     public boolean isIsObstaculo() {
         return isObstaculo;
     }
@@ -162,8 +151,7 @@ public class Nodo implements Comparable<Nodo> {
         this.distanciaDesdeInicio = funcionG;
     }
 
-        
-    @Override
+    @Override//método que sirve para ordenar la cola prioritaria según esta comparación
     public int compareTo(Nodo other) {
         double totalDistanceFromGoal = this.distanciaDesdeInicio + this.funcionHeursitica;
         double otherDistanceFromGoal = other.distanciaDesdeInicio + other.funcionHeursitica;

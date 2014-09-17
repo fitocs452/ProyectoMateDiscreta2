@@ -64,14 +64,11 @@ public class Astar {
                         nodosPorEvaluar.add(adyacente);
                         adyacenteIsMejor = true;
                     }
-                    else if (nuevoCosto < actual.getFuncionG())
+                    else if (nuevoCosto < adyacente.getFuncionG())
                         adyacenteIsMejor = true;
-                    else{
+                    else
                         adyacenteIsMejor =false;
-                        
-                    }
                     if (adyacenteIsMejor){
-                        
                         adyacente.setRaiz(actual); //añadir el camino
                         //System.out.println("n: " + nuevoCosto);
                         adyacente.setFuncionG(nuevoCosto);
@@ -92,11 +89,10 @@ public class Astar {
 
         while (!(nodo.getRaiz() == null)) {
             path.add(nodo.toString());
-            
             nodo = nodo.getRaiz();
         }
         path.add(nodo.toString());
-        Collections.reverse(path);
+        Collections.reverse(path); //cambiar el orden
         System.out.println("");
         System.out.println(path.toString() + " ->Camino más corto");
         
@@ -116,11 +112,10 @@ public class Astar {
         double D2 = Math.sqrt(2); //peso de arista diagonales
         double dx = Math.abs(current.getX()-goal.getX());
         double dy= Math.abs(current.getY()-goal.getY());
-        double p = 1/1000;//minimum cost of taking one step/expected maximum path length
-        return (D*(dx+dy)+(D2-2*D)*Math.min(dx,dy))*(1.0 + p);
-
+        double p = 1/16;//minimum cost of taking one step/expected maximum path length
+        double promedio = ((D*(dx+dy)+(D2-2*D)*Math.min(dx,dy))+(D*(dx+dy)))/2;
+        return promedio*(1.0 + p);
+       
     }
-
-
 }
 
