@@ -14,13 +14,11 @@ public class Nodo implements Comparable<Nodo> {
     private double distanciaDesdeInicio; //funcion G:costo del mejor camino encontrado->Dijsktra
     private double funcionF; //f = g+h
 
-
-
     public Nodo(int x, int y, Grafo grafo) {
         this.x = x;
         this.y = y;
         this.isObstaculo = false;
-        this.distanciaDesdeInicio =1;
+        this.distanciaDesdeInicio=Integer.MAX_VALUE; //al principio los nodos tienen costo infinito
         this.grafo = grafo;
     }
 
@@ -169,10 +167,9 @@ public class Nodo implements Comparable<Nodo> {
     public int compareTo(Nodo other) {
         double totalDistanceFromGoal = this.distanciaDesdeInicio + this.funcionHeursitica;
         double otherDistanceFromGoal = other.distanciaDesdeInicio + other.funcionHeursitica;
-        
         if (totalDistanceFromGoal < otherDistanceFromGoal)
                 return -1;
-        if (otherDistanceFromGoal > totalDistanceFromGoal)
+        if (otherDistanceFromGoal < totalDistanceFromGoal)
                 return 1;
         return 0;
     }
