@@ -7,8 +7,6 @@ package astar;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.JPanel;
 
@@ -17,12 +15,12 @@ import javax.swing.JPanel;
  * @author Pablo
  */
 public class GrafoGrafico extends JPanel{
-    private Grafo grafo;
-    private int EscalaX;
-    private int EscalaY;
-    private int ancho;
-    private int alto;
-    private List<Nodo> path;
+    private final Grafo grafo;
+    private final int EscalaX;
+    private final int EscalaY;
+    private final int ancho;
+    private final int alto;
+    private final List<Nodo> path;
 
     public GrafoGrafico(Grafo grafo, int ancho, int alto, List<Nodo> path) {
         this.grafo = grafo;
@@ -72,7 +70,6 @@ public class GrafoGrafico extends JPanel{
       
     private void paintPath(Graphics graphics) {
         graphics.setColor(Color.GREEN);
-
         
        for (Nodo n : path) {
            

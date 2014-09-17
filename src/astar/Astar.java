@@ -85,9 +85,6 @@ public class Astar {
     public void reconstruirCamino(Nodo nodo)
     {
         grafo.getGrafoGrafico();
-        
-        
-
         while (!(nodo.getRaiz() == null)) {
             path.add(nodo);
             nodo = nodo.getRaiz();
@@ -127,8 +124,6 @@ public class Astar {
     public List<Nodo> getPath() {
         return path;
     }
-    
-    
     
 }
 

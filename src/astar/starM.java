@@ -53,7 +53,7 @@ public class starM {
         Astar astar = new Astar(tamanio,tamanio);
         astar.calcular(diagonales);
         
-        
+        //mostrar parte gráfica 
          JFrame window = new JFrame();
           
           window.setSize(450, 450);
