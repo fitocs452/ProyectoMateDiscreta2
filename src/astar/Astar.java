@@ -3,6 +3,7 @@ package astar;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.PriorityQueue;
 
 
 public class Astar {
@@ -22,7 +23,7 @@ public class Astar {
     public void calcular(boolean diagonales) 
     {
         ArrayList<Nodo> nodosEvaluados= new ArrayList<>(); //set de nodos evaluados
-        ArrayList<Nodo> nodosPorEvaluar = new ArrayList<>();//set de nodos por evaluar, contiene inicialmente al nodo inicial
+        PriorityQueue<Nodo> nodosPorEvaluar = new PriorityQueue<>();//set de nodos por evaluar, contiene inicialmente al nodo inicial
 
         inicio.setFuncionG(0); //costo desde el inicio hasta el mejor camino conocido
 
@@ -30,8 +31,8 @@ public class Astar {
 
         int contadorIteraciones=0;
         while (!nodosPorEvaluar.isEmpty()) {
-
-            Nodo actual = nodosPorEvaluar.get(0);//obtener el nodo con menor funcion f
+            
+            Nodo actual = nodosPorEvaluar.poll();//obtener el nodo con menor funcion f
 
             if (actual.equals(destino)) 
             {  
@@ -40,31 +41,45 @@ public class Astar {
                 reconstruirCamino(actual);
                 break;
             }
-             
+            System.out.println("nodos por evaluar (frontera)"+ contadorIteraciones);
+            System.out.println(nodosPorEvaluar);
+            System.out.println("nodos evaluados");
+            System.out.println(nodosEvaluados);
             nodosPorEvaluar.remove(actual);
             nodosEvaluados.add(actual);
 
+           
             for (Nodo adyacente : actual.getNodosAdyacente(diagonales)) {
+                boolean adyacenteIsMejor;
                 if (nodosEvaluados.contains(adyacente))
                     continue; //se salta una iteracion
+                
 
                 if (!adyacente.isIsObstaculo()) {
-                    double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);//g actual mas costo de la arista
+                    double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
                     
-                    if (!nodosPorEvaluar.contains(adyacente) ||nuevoCosto < adyacente.getFuncionG()) {
-                        //implementacion de comparable para tener el nodo con menor funcionF 
-                        //al principio de la cola
-                        Collections.sort(nodosPorEvaluar); //equivale a cambiar la prioridad a una cola
+                    if (!nodosPorEvaluar.contains(adyacente)){
+                        //Collections.sort(nodosPorEvaluar);
+                        //equivale a cambiar la prioridad a una cola
                         nodosPorEvaluar.add(adyacente);
+                        adyacenteIsMejor = true;
+                    }
+                    else if (nuevoCosto < actual.getFuncionG())
+                        adyacenteIsMejor = true;
+                    else{
+                        adyacenteIsMejor =false;
+                        
+                    }
+                    if (adyacenteIsMejor){
+                        
                         adyacente.setRaiz(actual); //añadir el camino
                         //System.out.println("n: " + nuevoCosto);
                         adyacente.setFuncionG(nuevoCosto);
                         adyacente.setFuncionHeursitica(calcularHeuristica(adyacente, destino,diagonales));
-
-                    }//cierra true adyacente mejor
-                }//cierra if obstaculo 
-                contadorIteraciones++;
+                    }
+                }
             }//cierra for adyacente
+            contadorIteraciones++;
         }//cierra while
     }//cierra calcular
 
@@ -76,11 +91,11 @@ public class Astar {
         List<String> path = new ArrayList<>();
 
         while (!(nodo.getRaiz() == null)) {
-            path.add("("+nodo.getX() +"," + nodo.getY()+")");
+            path.add(nodo.toString());
             
             nodo = nodo.getRaiz();
         }
-        path.add("("+nodo.getX() +"," + nodo.getY()+")");
+        path.add(nodo.toString());
         Collections.reverse(path);
         System.out.println("");
         System.out.println(path.toString() + " ->Camino más corto");
