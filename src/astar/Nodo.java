@@ -5,7 +5,7 @@ import java.util.Random;
 
 
 public class Nodo implements Comparable<Nodo> {
-    private boolean isObstaculo;
+    private boolean Obstaculo;
     private Nodo raiz;
     private Grafo grafo;
     private int x;
@@ -16,7 +16,7 @@ public class Nodo implements Comparable<Nodo> {
     public Nodo(int x, int y, Grafo grafo) {
         this.x = x;
         this.y = y;
-        this.isObstaculo = false;
+        this.Obstaculo = false;
         this.distanciaDesdeInicio=Integer.MAX_VALUE; //al principio los nodos tienen costo infinito
         this.grafo = grafo;
     }
@@ -95,12 +95,12 @@ public class Nodo implements Comparable<Nodo> {
         
         return nodosAdyacentes;
     }
-    public boolean isIsObstaculo() {
-        return isObstaculo;
+    public boolean isObstaculo() {
+        return Obstaculo;
     }
 
-    public void setIsObstaculo(boolean isObstaculo) {
-        this.isObstaculo = isObstaculo;
+    public void setIsObstaculo(boolean Obstaculo) {
+        this.Obstaculo = Obstaculo;
     }
 
     public Nodo getRaiz() {

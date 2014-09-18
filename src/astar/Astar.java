@@ -2,8 +2,10 @@ package astar;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
+import java.util.Set;
 
 
 public class Astar {
@@ -12,23 +14,25 @@ public class Astar {
     private final Nodo inicio;
     private final Nodo destino;
     private List<Nodo> path = new ArrayList<>();
+    private  Set<Nodo> nodosEvaluados;
     
     public Astar(int ancho, int alto) 
     {
         this.grafo = new Grafo(ancho, alto);
-        this.inicio = new Nodo(0, alto-1, grafo);
-        this.destino = new Nodo(ancho-1, 0, grafo);
+        this.inicio = new Nodo(0, 0, grafo);
+        this.destino = new Nodo(ancho-1, alto-1, grafo);
 
     }
 
     public void calcular(boolean diagonales) 
     {
-        ArrayList<Nodo> nodosEvaluados= new ArrayList<>(); //set de nodos evaluados
+        nodosEvaluados= new HashSet<>(); //set de nodos evaluados
         PriorityQueue<Nodo> nodosPorEvaluar = new PriorityQueue<>();//set de nodos por evaluar, contiene inicialmente al nodo inicial
 
         inicio.setFuncionG(0); //costo desde el inicio hasta el mejor camino conocido
-
+        inicio.setFuncionHeursitica(calcularHeuristica(inicio, destino,diagonales));
         nodosPorEvaluar.add(inicio);
+        
 
         int contadorIteraciones=0;
         while (!nodosPorEvaluar.isEmpty()) {
@@ -56,7 +60,7 @@ public class Astar {
                     continue; //se salta una iteracion
                 
 
-                if (!adyacente.isIsObstaculo()) {
+                if (!adyacente.isObstaculo()) {
                     double nuevoCosto = actual.getFuncionG() + getDistanciaEntre(actual, adyacente);
                     
                     if (!nodosPorEvaluar.contains(adyacente)){
@@ -67,8 +71,10 @@ public class Astar {
                     }
                     else if (nuevoCosto < adyacente.getFuncionG())
                         adyacenteIsMejor = true;
-                    else
+                    else{
                         adyacenteIsMejor =false;
+                        //nodosPorEvaluar.remove(adyacente);
+                    }
                     if (adyacenteIsMejor){
                         adyacente.setRaiz(actual); //añadir el camino
                         //System.out.println("n: " + nuevoCosto);
@@ -110,11 +116,17 @@ public class Astar {
         double D2 = Math.sqrt(2); //peso de arista diagonales
         double dx = Math.abs(current.getX()-goal.getX());
         double dy= Math.abs(current.getY()-goal.getY());
-        double p = 1/16;//minimum cost of taking one step/expected maximum path length
+        double p = 1/1000;//minimum cost of taking one step/expected maximum path length
         //se realiza un promedio de distancia manhattan de 8 movimientos y 4 movimientos
         double promedio = ((D*(dx+dy)+(D2-2*D)*Math.min(dx,dy))+(D*(dx+dy)))/2;
-        return promedio*(1.0 + p);
+        if (diagonales)
+            return promedio*(1.0 + p);
+        return (D*(dx+dy))*(1.0+p);
        
+    }
+
+    public Set<Nodo> getNodosEvaluados() {
+        return nodosEvaluados;
     }
 
     public Grafo getGrafo() {

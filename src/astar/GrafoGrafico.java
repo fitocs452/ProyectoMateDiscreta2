@@ -7,7 +7,9 @@ package astar;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 import javax.swing.JPanel;
 
 /**
@@ -21,16 +23,19 @@ public class GrafoGrafico extends JPanel{
     private final int ancho;
     private final int alto;
     private final List<Nodo> path;
+    private final Set<Nodo> nodosEvaluados;
 
-    public GrafoGrafico(Grafo grafo, int ancho, int alto, List<Nodo> path) {
+    public GrafoGrafico(Grafo grafo, int ancho, int alto, List<Nodo> path, Set<Nodo> nodosEvaluados) {
         this.grafo = grafo;
         this.ancho = ancho;
         this.alto = alto;
         this.path = path;
         this.EscalaX=400/ancho;
         this.EscalaY=400/alto;
+        this.nodosEvaluados=nodosEvaluados;
         setSize(EscalaX * ancho, EscalaY * alto);
         setVisible(true);
+        
     }
     
     
@@ -42,14 +47,14 @@ public class GrafoGrafico extends JPanel{
           
           for (int x = 0; x < alto; ++x) {
                for (int y = 0; y < ancho; ++y) {
-                    if (grafo.getNodo(x, y).isIsObstaculo()) {
+                    if (grafo.getNodo(x, y).isObstaculo()) {
                          fillRect(graphics, x, y);
                     }
                }
           }
      }
     public void paintGrafo(Graphics graphics){
-        graphics.setColor(Color.BLUE);
+        graphics.setColor(Color.gray);
         for (int y = 0; y < alto; y++) 
        {
            for (int x = 0; x < ancho; x++)
@@ -62,21 +67,29 @@ public class GrafoGrafico extends JPanel{
       @Override
     public void paint(Graphics graphics) {
 
-         graphics.setColor(Color.BLUE);
+         graphics.setColor(Color.DARK_GRAY);
          paintGrafo(graphics);
          paintObstacles(graphics);
          paintPath(graphics);
+         //paintEvaluatedNodes(graphics);
     }
       
     private void paintPath(Graphics graphics) {
+       
+       graphics.setColor(Color.red);
+       for (Nodo n1: nodosEvaluados)
+           fillRect(graphics,n1.getX(),n1.getY());
+       
         graphics.setColor(Color.GREEN);
-        
-       for (Nodo n : path) {
+        for (Nodo n : path) {
            
            int x = n.getX(); int y = n.getY();
            fillRect(graphics, x, y);
            
            
        }
+       
+       
     }
+   
 }
