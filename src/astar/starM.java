@@ -59,7 +59,7 @@ public class starM {
           window.setSize(450, 450);
           window.setLocationRelativeTo(null);
           window.setVisible(true);
-          window.add(new GrafoGrafico(astar.getGrafo(),tamanio,tamanio,astar.getPath()));
+          window.add(new GrafoGrafico(astar.getGrafo(),tamanio,tamanio,astar.getPath(),astar.getNodosEvaluados()));
           window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
