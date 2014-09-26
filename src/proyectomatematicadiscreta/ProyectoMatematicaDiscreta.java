@@ -18,7 +18,7 @@ public class ProyectoMatematicaDiscreta {
    
    
   public static void main(String [] args) {   
-
+      
   }   
 
 
