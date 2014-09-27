@@ -53,7 +53,7 @@ public class Grafo {
         {
             for (int x = 0; x < ancho; x++)
             {
-                System.out.print(grafo.get(y).get(x));
+                //System.out.print(grafo.get(y).get(x));
                 if (x==ancho-1){
                     System.out.println("");
                 }
