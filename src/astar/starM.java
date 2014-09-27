@@ -15,6 +15,10 @@ import javax.swing.JOptionPane;
  * @author Pablo
  */
 public class starM {
+    
+    /********** Método para crear nuevas diagongales 
+       Recibe como parámetro el tamanho del arreglo, que es la cantidad de nodos
+                                                    ********************/
     public static int[] nuevoDistri(int tamanio){
         Random aleatorio = new Random();
         int[] arregloDistri = new int[tamanio];
@@ -24,17 +28,16 @@ public class starM {
         }
         return arregloDistri;
     }
+    
     public static void main(String[] args) {
         
-        int[] arregloDistri1 = new int[16];
-        int[] arregloDistri2 = new int[225];
-        int[] arregloDistri3 = new int[400];
-        arregloDistri1 = nuevoDistri(16);
-        arregloDistri2 = nuevoDistri(225);
-        arregloDistri3 = nuevoDistri(400);
-        
+        /* Realizo todas las diagonales para los grafos de distintos tamanhos*/
+        int[] arregloDistri1 = nuevoDistri(16);
+        int[] arregloDistri2 = nuevoDistri(225);
+        int[] arregloDistri3 = nuevoDistri(400);
         
         boolean salir = false;
+        /* Ciclo para ejecutar algoritmos */
         while(!salir){
             int decision = JOptionPane.showOptionDialog(
             null,
@@ -46,13 +49,15 @@ public class starM {
             new Object[] { "Grafo sin Diagonales", "Grafo con Diagonales"},   // null para YES, NO y CANCEL
             "Grafo sin Diagonales");
 
+            
             boolean diagonales;
-
+            /* Condicion para saber si el grafo cuenta con diagonales o no*/
             if (decision ==1){
                 diagonales=true;
             }
             else diagonales=false;
 
+            /* Condicion para saber el tamanho de los grafos*/
             int tamanio = JOptionPane.showOptionDialog(
             null,
             "Seleccione condicion", 
@@ -62,6 +67,9 @@ public class starM {
             null,    // null para icono por defecto.
             new Object[] { "Grafo 4x4", "Grafo 15x15", "Grafo 20x20"},   // null para YES, NO y CANCEL
             "Grafo 4x4");
+            
+            
+            /** Se ejecuta el algoritmo de camino mas corto segun el tamanho del grafo**/
             Astar astar = null;
             if (tamanio==0){
                 tamanio = 4;
@@ -88,6 +96,8 @@ public class starM {
             window.add(new GrafoGrafico(astar.getGrafo(),tamanio,tamanio,astar.getPath(),astar.getNodosEvaluados()));
             window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             
+            
+            /***************** Condicion para continuar probando algoritmos *******************/
             int seleccion = JOptionPane.showOptionDialog(
             null, // Componente padre
             "¿Desea continuar?", //Mensaje
@@ -99,7 +109,9 @@ public class starM {
             "Si");
             if (seleccion == 1){
                 salir = true;
-            }else if (seleccion == 2){
+            }else if (seleccion == 0){
+                
+                /************************** Condicion para crear nuevas diagonales ***********************/
                 int crearNuevasDiagonales = JOptionPane.showOptionDialog(
                 null, // Componente padre
                 "¿Desea crear nuevas diagonales?", //Mensaje
@@ -109,7 +121,8 @@ public class starM {
                 null,    // null para icono por defecto.
                 new Object[] { "Si", "No"},    // null para YES, NO y CANCEL
                 "Si");
-
+                    
+                //Se crean nuevas diagonales
                 if (crearNuevasDiagonales == 0){
                     arregloDistri1 = nuevoDistri(16);
                     arregloDistri2 = nuevoDistri(225);
