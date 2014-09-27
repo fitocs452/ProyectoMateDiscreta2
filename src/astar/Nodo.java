@@ -10,6 +10,7 @@ public class Nodo implements Comparable<Nodo> {
     private Grafo grafo;
     private int x;
     private int y;
+    private int distribuicion;
     private double funcionHeursitica;//costo del camino nodo actual al final -> Greedy
     private double distanciaDesdeInicio; //funcion G:costo del mejor camino encontrado->Dijsktra
  
@@ -25,14 +26,15 @@ public class Nodo implements Comparable<Nodo> {
         return (this.x == nodo.x) && (this.y == nodo.y);
     }
     //método para calcular los nodos adyacentes de un nodo
+    
+    public void asignarDiagonal(int diagonal){
+        distribuicion = diagonal;
+    }
+    
     public ArrayList<Nodo> getNodosAdyacente(boolean diagonales) 
     {
     //si es con diagonales se crea un número aleatorio con probabilidad 1/2
         
-        Random aleatorio = new Random();
-        int distribuicion =0;
-        if (diagonales)
-            distribuicion= aleatorio.nextInt(2)+1;//aleatorio 1 o 2
         
         ArrayList<Nodo> nodosAdyacentes = new ArrayList<>(); //lista para meter los nodos adyacentes
         //verificar los nodos con x constantes y y hacia abajo
@@ -165,5 +167,9 @@ public class Nodo implements Comparable<Nodo> {
     public String toString()
     {
         return "("+this.x +" ," + this.y +")";
+    }
+
+    public void setDistribuicion(int distribuicion) {
+        this.distribuicion = distribuicion;
     }
 }

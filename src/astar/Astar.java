@@ -15,13 +15,16 @@ public class Astar {
     private final Nodo destino;
     private List<Nodo> path = new ArrayList<>();
     private  Set<Nodo> nodosEvaluados;
+    private int[] arregloDiagonales;
     
-    public Astar(int ancho, int alto) 
+    public Astar(int ancho, int alto, int[] arregloDistri) 
     {
-        this.grafo = new Grafo(ancho, alto);
+        this.grafo = new Grafo(ancho, alto, arregloDistri);
+        this.arregloDiagonales = this.grafo.getDiagonalesNodos();
         this.inicio = new Nodo(0, 0, grafo);
         this.destino = new Nodo(ancho-1, alto-1, grafo);
-
+        
+        
     }
 
     public void calcular(boolean diagonales) 
@@ -53,8 +56,15 @@ public class Astar {
             nodosPorEvaluar.remove(actual);
             nodosEvaluados.add(actual);
 
-           
+            
             for (Nodo adyacente : actual.getNodosAdyacente(diagonales)) {
+                /************************************
+                int contN = 0;
+                int diagonalN = arregloDiagonales.indexOf(contN);
+                adyacente.setDistribuicion(diagonalN);
+                contN++;
+                ***********************************/
+          
                 boolean adyacenteIsMejor;
                 if (nodosEvaluados.contains(adyacente))
                     continue; //se salta una iteracion
@@ -136,6 +146,5 @@ public class Astar {
     public List<Nodo> getPath() {
         return path;
     }
-    
 }
 
