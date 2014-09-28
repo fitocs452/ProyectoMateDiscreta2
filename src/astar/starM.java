@@ -32,7 +32,7 @@ public class starM {
         int[] arregloDistri1 = nuevoDistri(16);
         int[] arregloDistri2 = nuevoDistri(225);
         int[] arregloDistri3 = nuevoDistri(400);
-        
+        Astar astar = null;
         boolean salir = false;
         /* Ciclo para ejecutar algoritmos */
         while(!salir){
@@ -60,11 +60,6 @@ public class starM {
             JOptionPane.YES_NO_CANCEL_OPTION,JOptionPane.QUESTION_MESSAGE,null,    // null para icono por defecto.
             new Object[] { "Grafo sin obstaculos", "Grafo con obstaculos"},"Si");
             
-            /* Condicion para saber si el grafo cuenta con obstaculo o no */
-            if (decision2 == 1){
-                obstaculo = true;
-            }else obstaculo = false;
-
             /* Condicion para saber el tamanho de los grafos*/
             int tamanio = JOptionPane.showOptionDialog(
             null,
@@ -89,7 +84,7 @@ public class starM {
                     
                     /****************** En caso el usuario decidió utilizar el algoritmo Astar ***/
                     /** Se ejecuta el algoritmo de camino mas corto segun el tamanho del grafo**/
-                    Astar astar = null;
+                    
                     if (tamanio==0){
                         tamanio = 4;
                         astar = new Astar(tamanio, tamanio, arregloDistri1);
@@ -101,28 +96,13 @@ public class starM {
                     if (tamanio ==2){
                         tamanio = 20;
                         astar = new Astar(tamanio, tamanio, arregloDistri3);
+                    }     
+                    
+                    if (decision2==1){
+                        if (tamanio==4) {astar.getGrafo().crearOstaculo4x4();} 
+                        if (tamanio==15) {astar.getGrafo().crearOstaculo15x15();}
+                        if (tamanio==20) {astar.getGrafo().crearOstaculo20x20();}
                     }
-                    
-                    
-                    
-                    
-        int obstaculos = JOptionPane.showOptionDialog(
-        null,
-        "Seleccione condicion", 
-        "Selector de opciones",
-        JOptionPane.YES_NO_CANCEL_OPTION,
-        JOptionPane.QUESTION_MESSAGE,
-        null,    // null para icono por defecto.
-        new Object[] { "Grafo sin Obstaculos", "Grafo con Obstaculos"},   // null para YES, NO y CANCEL
-        "Grafo sin Diagonales");
-        
-                    
-                    
-                      if (obstaculos==1){
-           if (tamanio==4) {astar.getGrafo().crearOstaculo4x4();} 
-           if (tamanio==15) {astar.getGrafo().crearOstaculo15x15();}
-           if (tamanio==20) {astar.getGrafo().crearOstaculo20x20();}
-          }
                     
                     astar.calcular(diagonales);
                     //mostrar parte gráfica 
@@ -133,6 +113,7 @@ public class starM {
                     window.add(new GrafoGrafico(astar.getGrafo(),tamanio,tamanio,astar.getPath(),astar.getNodosEvaluados()));
                     window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                     break;
+                    
                 case 1:
                 /********************** En caso el usuario decidió utilizar el algoritmo Dijkstra **/
                     System.out.println("Algoritmo: Dijkstra");
