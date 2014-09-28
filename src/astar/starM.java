@@ -102,6 +102,28 @@ public class starM {
                         tamanio = 20;
                         astar = new Astar(tamanio, tamanio, arregloDistri3);
                     }
+                    
+                    
+                    
+                    
+        int obstaculos = JOptionPane.showOptionDialog(
+        null,
+        "Seleccione condicion", 
+        "Selector de opciones",
+        JOptionPane.YES_NO_CANCEL_OPTION,
+        JOptionPane.QUESTION_MESSAGE,
+        null,    // null para icono por defecto.
+        new Object[] { "Grafo sin Obstaculos", "Grafo con Obstaculos"},   // null para YES, NO y CANCEL
+        "Grafo sin Diagonales");
+        
+                    
+                    
+                      if (obstaculos==1){
+           if (tamanio==4) {astar.getGrafo().crearOstaculo4x4();} 
+           if (tamanio==15) {astar.getGrafo().crearOstaculo15x15();}
+           if (tamanio==20) {astar.getGrafo().crearOstaculo20x20();}
+          }
+                    
                     astar.calcular(diagonales);
                     //mostrar parte gráfica 
                     JFrame window = new JFrame();
