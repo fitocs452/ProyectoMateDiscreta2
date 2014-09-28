@@ -1,5 +1,12 @@
 package astar;
 
+/**
+* Universidad Del Valle 
+* Pablo Díaz 13203
+* Adolfo Morales 13014
+* Jorge García
+*/
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;

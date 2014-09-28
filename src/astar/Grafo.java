@@ -1,6 +1,12 @@
 package astar;
 import java.util.ArrayList;
 import java.util.Random;
+/**
+* Universidad Del Valle 
+* Pablo Díaz 13203
+* Adolfo Morales 13014
+* Jorge García
+*/
 
 
 public class Grafo {

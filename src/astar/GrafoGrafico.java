@@ -1,8 +1,9 @@
 /**
 * Universidad Del Valle 
 * Pablo Díaz 13203
+* Adolfo Morales 13014
+* Jorge García
 */
-
 package astar;
 
 import java.awt.Color;
